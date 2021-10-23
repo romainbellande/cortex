@@ -1,0 +1,10 @@
+input:checked ~ {
+  .dot {
+    transform: translateX(100%);
+    @apply bg-indigo-800;
+  }
+
+  .line  {
+    @apply bg-indigo-500;
+  }
+}

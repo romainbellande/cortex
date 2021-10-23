@@ -1,0 +1,15 @@
+http:
+  routers:
+    traefik:
+      rule: "Host(`traefik.cortex.localhost`)"
+      service: "api@internal"
+      tls:
+        domains:
+          - main: "cortex.localhost"
+            sans:
+              - "*.cortex.localhost"
+
+tls:
+  certificates:
+    - certFile: "/etc/certs/local-cert.pem"
+      keyFile: "/etc/certs/local-key.pem"

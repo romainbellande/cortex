@@ -1,0 +1,9 @@
+<div class="flex flex-row flex-auto">
+  <div>
+    <input type="text" placeholder="Enter a city" (input)="onCityChange($event)" />
+    <ul>
+      <li *ngFor="let city of cities">{{ city.name }}</li>
+    </ul>
+  </div>
+  <cortex-map ref="weather"></cortex-map>
+</div>

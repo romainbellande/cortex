@@ -1,0 +1,13 @@
+<li>
+  <a class="flex items-center pl-3 py-3 pr-4 text-gray-50 hover:bg-gray-900 rounded"
+    [routerLink]="to"
+    routerLinkActive="bg-indigo-500 active"
+    [routerLinkActiveOptions]="{exact:true}">
+    <span class="inline-block mr-3">
+      <fa-icon [icon]="icon" class="text-gray-600"></fa-icon>
+    </span>
+    <span>
+      <ng-content></ng-content>
+    </span>
+  </a>
+</li>

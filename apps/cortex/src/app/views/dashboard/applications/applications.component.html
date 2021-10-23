@@ -1,0 +1,16 @@
+<div class="flexflex-col">
+  <div class="flex justify-center mt-4">
+    <cortex-searchbar></cortex-searchbar>
+  </div>
+  <div class="flex flex-wrap mt-4 justify-center sm:justify-start">
+    <cortex-app-tile
+    *ngFor="let app of applications"
+    class="sm:w-1/2 lg:w-1/4"
+    [title]="app.title"
+    [description]="app.description"
+    [to]="app.to"
+    [icon]="app.icon">
+  </cortex-app-tile>
+  </div>
+</div>
+
