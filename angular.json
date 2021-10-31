@@ -66,6 +66,28 @@
         }
       }
     },
+    "browser-toolkit": {
+      "root": "libs/browser-toolkit",
+      "sourceRoot": "libs/browser-toolkit/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/browser-toolkit/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/browser-toolkit"],
+          "options": {
+            "jestConfig": "libs/browser-toolkit/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
     "cortex": {
       "projectType": "application",
       "root": "apps/cortex",
@@ -85,10 +107,7 @@
             "polyfills": "apps/cortex/src/polyfills.ts",
             "tsConfig": "apps/cortex/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": [
-              "apps/cortex/src/favicon.ico",
-              "apps/cortex/src/assets"
-            ],
+            "assets": ["apps/cortex/src/favicon.ico", "apps/cortex/src/assets"],
             "styles": ["apps/cortex/src/styles.scss"],
             "scripts": []
           },
@@ -210,6 +229,63 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": ["libs/ui/src/**/*.ts", "libs/ui/src/**/*.html"]
+          }
+        },
+        "storybook": {
+          "builder": "@nrwl/storybook:storybook",
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "port": 4400,
+            "config": {
+              "configFolder": "libs/ui/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@nrwl/storybook:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "uiFramework": "@storybook/angular",
+            "outputPath": "dist/storybook/ui",
+            "config": {
+              "configFolder": "libs/ui/.storybook"
+            }
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        }
+      }
+    },
+    "ui-e2e": {
+      "root": "apps/ui-e2e",
+      "sourceRoot": "apps/ui-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/ui-e2e/cypress.json",
+            "devServerTarget": "ui:storybook"
+          },
+          "configurations": {
+            "ci": {
+              "devServerTarget": "ui:storybook:ci"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/ui-e2e/**/*.{js,ts}"]
           }
         }
       }

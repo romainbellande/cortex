@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApplicationsComponent } from './applications.component';
 import { ApplicationsRoutingModule } from './applications-routing.module';
-import { UiModule } from '@cortex/ui';
+import { SearchbarModule, AppTileModule } from '@cortex/ui';
 
 
 @NgModule({
@@ -12,7 +12,8 @@ import { UiModule } from '@cortex/ui';
   imports: [
     CommonModule,
     ApplicationsRoutingModule,
-    UiModule
+    SearchbarModule,
+    AppTileModule
   ]
 })
 export class ApplicationsModule { }

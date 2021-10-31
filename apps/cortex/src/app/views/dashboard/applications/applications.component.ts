@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import { faCloudSun, faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { faCloudSun, faUtensils, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 interface Application {
   title: string;

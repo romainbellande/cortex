@@ -2,8 +2,16 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+import { Environment } from "./environment.interface";
+
+export const environment: Environment = {
   production: false,
+  map: {
+    accessToken: 'pk.eyJ1IjoibmFpbW9yIiwiYSI6ImNrdmYwOTNsNDFvNzAydnBnNGlkNm1kaWwifQ.Mw-ajqZ-lX_wVzjd_NwW7g'
+  },
+  opemweathermap: {
+    appid: '898a9a5cced63fe4d8473b019e24cbf1'
+  }
 };
 
 /*

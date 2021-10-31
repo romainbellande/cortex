@@ -86,6 +86,7 @@ services:
       YARN_VERSION: 1.22.5
       ENVIRONMENT: "development"
       API_URL: api.cortex.localhost/api/v1
+      NX_TEST: test
     volumes:
       - ./:/home/node
       - yarn-dir:/usr/local/share/.config/yarn/global

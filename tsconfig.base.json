@@ -16,6 +16,9 @@
     "baseUrl": ".",
     "paths": {
       "@cortex/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@cortex/api/*": ["apps/api/src/*"],
+      "@cortex/browser-toolkit": ["libs/browser-toolkit/src/index.ts"],
+      "@cortex/client/*": ["apps/cortex/src/*"],
       "@cortex/ui": ["libs/ui/src/index.ts"]
     }
   },

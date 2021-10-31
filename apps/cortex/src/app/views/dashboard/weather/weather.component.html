@@ -1,5 +1,8 @@
 <div class="flex flex-row flex-auto">
-  <div>
+  <div class="max-w-xs">
+    <select>
+      <option *ngFor="let country of countries" [value]="country.alpha3">{{ country.country }}</option>
+    </select>
     <input type="text" placeholder="Enter a city" (input)="onCityChange($event)" />
     <ul>
       <li *ngFor="let city of cities">{{ city.name }}</li>
