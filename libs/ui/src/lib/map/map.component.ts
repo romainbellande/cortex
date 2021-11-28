@@ -1,6 +1,6 @@
-import { Component, Input, AfterViewInit } from '@angular/core';
-import { Map } from 'mapbox-gl';
-
+import { Component, Input, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Marker, Map } from 'mapbox-gl';
+import { Coordinates } from '@cortex/browser-toolkit';
 import { MapService } from './map.service';
 
 @Component({
@@ -16,6 +16,12 @@ export class MapComponent implements AfterViewInit {
   @Input()
   ref!: string;
 
+  @Input()
+  center!: Coordinates;
+
+  @Output()
+  mapEvent = new EventEmitter<Map>();
+
   accessToken = '';
 
   constructor(private mapService: MapService) {}
@@ -25,14 +31,24 @@ export class MapComponent implements AfterViewInit {
         accessToken: this.mapService.getAccessToken(),
         container: this.ref, // container ID
         style: 'mapbox://styles/mapbox/streets-v11', // style URL
-        center: [-74.5, 40], // starting position [lng, lat]
-        zoom: 9, // starting zoom
+        center: {
+          lat: this.center.latitude,
+          lon: this.center.longitude
+        },
+        zoom: 12, // starting zoom
         attributionControl: false
     });
 
-    map.on('load', function () {
-      map.resize();
-  });
-  }
+    new Marker({
+      anchor: 'bottom',
+    })
+    .setLngLat({
+      lat: this.center.latitude,
+      lon: this.center.longitude
+    }).addTo(map);
+    // map.on('load', () => {
 
+    //   this.mapEvent.emit(map);
+    // });
+  }
 }

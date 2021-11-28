@@ -1,26 +1,11 @@
-import axios, { AxiosInstance } from 'axios';
+import { OAWGeocodingClient } from "./oaw-geocoding.client";
+import { OAWDataClient } from './oaw-data.client';
+export class OAWClient {
+  geocoding: OAWGeocodingClient;
+  data: OAWDataClient;
 
-interface OAWClientConfig {
-  appid: string;
-  endpoint: string;
-}
-
-export abstract class OAWClient {
-  protected appid: string;
-  protected baseURL = 'https://api.openweathermap.org';
-  protected client: AxiosInstance;
-
-  constructor({ appid, endpoint}: OAWClientConfig) {
-    this.appid = appid;
-    this.client = axios.create({
-      baseURL: `${this.baseURL}${endpoint}`,
-      responseType: 'json'
-    });
-  }
-
-  protected createParams(): URLSearchParams {
-    const params = new URLSearchParams();
-    params.set('appid', this.appid);
-    return params;
+  constructor(appid: string) {
+    this.geocoding = new OAWGeocodingClient(appid);
+    this.data = new OAWDataClient(appid);
   }
 }

@@ -1,12 +1,13 @@
 <div class="flex flex-row flex-auto">
   <div class="max-w-xs">
-    <select>
-      <option *ngFor="let country of countries" [value]="country.alpha3">{{ country.country }}</option>
-    </select>
+    <ng-select class="app-select" [items]="countries" bindLabel="country" bindValue="alpha2" autofocus [(ngModel)]="currentCountryCode"></ng-select>
     <input type="text" placeholder="Enter a city" (input)="onCityChange($event)" />
     <ul>
-      <li *ngFor="let city of cities">{{ city.name }}</li>
+      <li class="cursor-pointer" *ngFor="let city of cities" (click)="onCitySelect(city)">{{ city.country }} - {{ city.name }}</li>
     </ul>
   </div>
-  <cortex-map ref="weather"></cortex-map>
+  <div *ngIf="currentWeather">
+    <cortex-weather-details [data]="currentWeather" [city]="currentCity"></cortex-weather-details>
+  </div>
+  <!-- <cortex-map *ngIf="currentCoordinates" [center]="currentCoordinates" ref="weather" (mapEvent)="onMapInitialized($event)"></cortex-map> -->
 </div>

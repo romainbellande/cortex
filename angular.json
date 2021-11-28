@@ -108,7 +108,7 @@
             "tsConfig": "apps/cortex/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["apps/cortex/src/favicon.ico", "apps/cortex/src/assets"],
-            "styles": ["apps/cortex/src/styles.scss"],
+            "styles": ["node_modules/mapbox-gl/dist/mapbox-gl.css", "apps/cortex/src/styles.scss"],
             "scripts": []
           },
           "configurations": {

@@ -23,8 +23,8 @@ migration-run: ## [api] run migration
 .PHONY: migration-generate migration-revert migration-run certs
 
 ## —— client ———————————————————————————————————————————————————————————————————————————————————————————————————————
-ui-component: ## [client] create new ui component
-	npx nx g component $(name) --project=ui --export
+ui-module: ## [client] create new ui module
+	npx nx g module $(name) --project=ui && npx nx g component $(name) --project=ui
 
 app-view:
 	npx nx g module views/$(name) --routing --project=cortex

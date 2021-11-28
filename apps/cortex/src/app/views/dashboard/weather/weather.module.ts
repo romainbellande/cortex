@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 
 import { WeatherRoutingModule } from './weather-routing.module';
 import { WeatherComponent } from './weather.component';
-import { MapModule } from '@cortex/ui';
+import { MapModule, WeatherDetailsModule } from '@cortex/ui';
 import { HttpClientModule } from '@angular/common/http';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { environment } from '@cortex/client/environments/environment';
@@ -22,7 +22,8 @@ import { environment } from '@cortex/client/environments/environment';
     }),
     HttpClientModule,
     NgSelectModule,
-    FormsModule
+    FormsModule,
+    WeatherDetailsModule,
   ]
 })
 export class WeatherModule { }

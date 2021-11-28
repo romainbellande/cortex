@@ -3,18 +3,15 @@ import { AfterViewInit, Component } from '@angular/core';
 import { debounce } from 'lodash';
 import coutries from 'iso-3166-1';
 import { Country } from 'iso-3166-1/dist/iso-3166';
-import { getCurrentPosition, OAWGeocodingClient, OAWDirectResponseItem } from '@cortex/browser-toolkit';
+import { getCurrentPosition, OneCallResponse, OAWClient } from '@cortex/browser-toolkit';
 import { environment } from '@cortex/client/environments/environment';
-
-interface Coordinates {
-  latitude: number;
-  longitude: number;
-}
+import { Map } from 'mapbox-gl';
+import { Coordinates } from '@cortex/browser-toolkit';
 
 interface City {
   name: string;
-  lat: string;
-  lon: string;
+  lat: number;
+  lon: number;
   country: string;
 }
 
@@ -31,20 +28,20 @@ export class WeatherComponent implements AfterViewInit {
   cities: City[] = [];
   countries: Country[] = coutries.all();
   currentCoordinates?: Coordinates;
-  oawGeocodingClient = new OAWGeocodingClient(environment.opemweathermap.appid);
+  currentCountryCode?: string;
+  oawClient = new OAWClient(environment.opemweathermap.appid);
+  map?: Map;
+  currentWeather?: OneCallResponse;
+  currentCity = '';
+  hourlyForecast: any = null;
 
   constructor(private http: HttpClient) {}
 
   fetchCity = debounce(async (city: string) => {
     console.log(`city`, city)
-    const response = await this.oawGeocodingClient.getDirect({
+    const { data } = await this.oawClient.geocoding.getDirect({
       city
     });
-
-    console.log('response :>> ', response);
-    const { data } = response;
-
-    console.log('data :>> ', data, Array.isArray(data), typeof data);
 
     if (Array.isArray(data)) {
       this.cities = data.map(({ name, lat, lon, country }) => ({
@@ -59,14 +56,33 @@ export class WeatherComponent implements AfterViewInit {
 
   async ngAfterViewInit() {
     try {
-      const position = await getCurrentPosition();
+      const position = await getCurrentPosition({
+        enableHighAccuracy: true
+      });
       console.log('position :>> ', position);
       const { coords: { latitude, longitude } } = position;
+
       this.currentCoordinates = {
         latitude,
         longitude,
       }
-      console.log('currentCoordinates :>> ', this.currentCoordinates);
+
+      const { data } = await this.oawClient.geocoding.getReverse({ lat: latitude, lon: longitude });
+
+      this.currentCity = data[0].name;
+
+      this.currentCountryCode = data[0].country;
+
+      const oneCallResponse = await this.oawClient.data.getOneCall({
+        latitude,
+        longitude,
+        units: 'metric',
+        exclude: ['minutely']
+      });
+
+      this.currentWeather = oneCallResponse.data;
+
+      console.log('response.data :>> ', this.currentWeather)
     } catch (error) {
       console.error(error.message);
     }
@@ -76,5 +92,32 @@ export class WeatherComponent implements AfterViewInit {
     const { value } = event.target as HTMLInputElement;
 
     this.fetchCity(value);
+  }
+
+  async onCitySelect({ name, lat, lon }: City) {
+    this.currentCity = name;
+    const { data } = await this.oawClient.data.getOneCall({
+      latitude: lat,
+      longitude: lon,
+      units: 'metric',
+      exclude: ['minutely']
+    });
+    this.currentWeather = data;
+  }
+
+  onMapInitialized(map: Map) {
+    console.log('map :>> ', map);
+    this.map = map;
+  }
+
+  getMap(): Promise<Map> {
+    return new Promise((resolve) => {
+      const interval = setInterval(() => {
+        if (this.map) {
+          resolve(this.map);
+          clearInterval(interval);
+        }
+      }, 200)
+    });
   }
 }

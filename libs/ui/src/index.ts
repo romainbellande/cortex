@@ -6,3 +6,5 @@ export * from './/lib/searchbar/searchbar.module';
 export * from './lib/sidenav/sidenav.module';
 export * from './lib/sidenav-item/sidenav-item.module';
 export * from './lib/toggle/toggle.module';
+export * from './lib/weather-details/weather-details.module';
+export * from './lib/weather-temperatures/weather-temperatures.module';

@@ -1,21 +1,30 @@
-import { OAWClient } from "./oaw.client";
+import { OAWClientBase } from "./oaw.client-base";
 
-export interface OAWDirectPayload {
-  city: string;
-  stateCode?: string;
-  countryCode?: string;
+export interface OAWCommonPayload {
   limit?: number;
 }
 
-export interface OAWDirectResponseItem {
+export interface OAWDirectPayload extends OAWCommonPayload {
+  city: string;
+  stateCode?: string;
+  countryCode?: string;
+}
+
+export interface OAWGeocodingResponseItem {
   name: string;
   local_names: Record<string, string>;
-  lat: string;
-  lon: string;
+  lat: number;
+  lon: number;
   country: string;
 }
 
-export class OAWGeocodingClient extends OAWClient {
+export interface OAWReversePayload extends OAWCommonPayload  {
+  lat: number;
+  lon: number;
+  limit?: number;
+}
+
+export class OAWGeocodingClient extends OAWClientBase {
   constructor(appid: string) {
     super({ appid, endpoint: '/geo/1.0'});
   }
@@ -28,6 +37,19 @@ export class OAWGeocodingClient extends OAWClient {
       params.set('limit', limit.toString());
     }
 
-    return this.client.get(`/direct?${params.toString()}`)
+    return this.client.get<OAWGeocodingResponseItem[]>(`/direct?${params.toString()}`)
+  }
+
+  getReverse({ lat, lon, limit }: OAWReversePayload) {
+    const params = this.createParams();
+
+    params.set('lat', lat.toString());
+    params.set('lon', lon.toString());
+
+    if (limit) {
+      params.set('limit', limit.toString());
+    }
+
+    return this.client.get<OAWGeocodingResponseItem[]>(`/reverse?${params.toString()}`)
   }
 }

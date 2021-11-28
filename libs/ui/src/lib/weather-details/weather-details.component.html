@@ -1,0 +1,25 @@
+<div>
+  <div class="flex justify-between space-x-4">
+    <div class="flex bg-blue-300">
+      <img [src]="getIconURL(data.current.weather[0].icon)" />
+      <div>
+        <div>= {{ data.current.temp }}°C</div>
+        <div>~ {{ data.current.feels_like }}°C</div>
+      </div>
+    </div>
+    <div>
+      <div>humidity: {{ data.current.humidity }}%</div>
+      <div>wind: {{ getWindSpeedKmh(data.current.wind_speed) }}km/h</div>
+    </div>
+    <div>
+      <div>{{ city }}</div>
+      <div>{{ formatDate(data.current.dt) }}</div>
+    </div>
+  </div>
+  <div>
+    <cortex-weather-temperatures [data]="getHourlyTemperatures()"></cortex-weather-temperatures>
+    <div class="flex">
+      <cortex-weather-day-tile *ngFor="let day of getDays(); let index = index" [config]="day" (click)="selectDay(index)" ></cortex-weather-day-tile>
+    </div>
+  </div>
+</div>
